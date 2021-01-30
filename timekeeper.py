@@ -1,7 +1,3 @@
-'''
-this is our timekeeper, it returns a formatted datetime str
-'''
-
 import datetime
 
 class TimeKeeper:
