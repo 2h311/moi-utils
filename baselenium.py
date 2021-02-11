@@ -6,8 +6,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 class Baselenium:
 	def __init__(self, driver_path):
-		self.driver_path = driver_path
-		self.create_driver()
+		self.create_driver(driver_path)
 
 	def set_cookies(self, filename:str, /, refresh=False):
 		print("Loading cookies")
@@ -43,12 +42,27 @@ class Baselenium:
 
 	def fetch_web_elements(self, args:tuple, element=None):
 		response = element.find_elements(*args) if element else self.driver.find_elements(*args)
-		if response == []:
-			response = None
-		return response
+		return response if response != [] else None
 
 	def scroll_to_view(self, element):
 		self.driver.execute_script("arguments[0].scrollIntoView();", element)
 
 	def kill(self):
 		self.driver.quit()
+
+	@staticmethod
+	def sift_text(element):
+		if isinstance(element, webdriver.remote.webelement.WebElement):
+			return element.text 
+
+	def switch_tab(self, handle):
+		# this helper handles joggling between tabs
+		self.driver.switch_to.window(handle)
+
+	def trigger_extra_tab(self):
+		'''trigger an extra tab'''
+		if len(self.driver.window_handles) == 1:
+			# Open a new window
+			logging.info("popping another window")
+			self.driver.execute_script("window.open('');")
+		return self.driver.window_handles

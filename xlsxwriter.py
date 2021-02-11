@@ -10,12 +10,15 @@ class Writer:
 class XlsxWriter(Writer):
 	def __init__(self, fields, filename='output'):
 		super().__init__(filename)
+		self.fields = fields 
 		self.letters = string.ascii_uppercase[:len(self.fields)]
 		self.file_type = '.xlsx'
-		self.fields = fields 
 		self.check_filename()
 		self.open_an_active_sheet()
 		self.write_sheet_headers()
+
+	def __str__(self):
+		return self.filename
 
 	def __repr__(self):
 		return self.filename
